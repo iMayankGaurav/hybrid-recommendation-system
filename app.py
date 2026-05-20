@@ -8,7 +8,11 @@ import os
 
 #API DATA FETCHING
 load_dotenv()
+
 API_KEY = os.getenv("API_KEY")
+
+if API_KEY is None:
+    API_KEY = st.secrets["API_KEY"]
 
 
 def fetch_poster(movie_title):
