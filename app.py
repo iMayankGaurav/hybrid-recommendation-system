@@ -1,7 +1,39 @@
+import requests
 import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+
+#API DATA FETCHING
+
+API_KEY = ""
+
+
+def fetch_poster(movie_title):
+
+    try:
+
+        url = f"https://api.themoviedb.org/3/search/movie?api_key={API_KEY}&query={movie_title}"
+
+        response = requests.get(url, timeout=10)
+
+        data = response.json()
+
+        if data['results']:
+
+            poster_path = data['results'][0].get('poster_path')
+
+            if poster_path:
+
+                full_path = "https://image.tmdb.org/t/p/w500/" + poster_path
+
+                return full_path
+
+    except Exception as e:
+
+        print("Error fetching poster:", e)
+
+    return None
 
 # ---------------- LOAD DATA ---------------- #
 
@@ -63,5 +95,17 @@ if st.button("Recommend"):
 
     st.subheader("Recommended Movies:")
 
-    for i, movie in enumerate(recommendations, start=1):
-        st.write(f"{i}. {movie}")
+    cols = st.columns(5)
+
+    for idx, movie in enumerate(recommendations):
+
+        poster = fetch_poster(movie)
+
+        with cols[idx]:
+
+            st.text(movie)
+
+            if poster:
+                st.image(poster)
+            else:
+                st.write("Poster not available")
