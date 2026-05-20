@@ -50,7 +50,12 @@ def recommend(movie_title):
 
 st.title("🎬 Movie Recommendation System")
 
-movie_name = st.text_input("Enter a movie name")
+movie_list = tmdb['title'].values
+
+movie_name = st.selectbox(
+    "Select a movie",
+    movie_list
+)
 
 if st.button("Recommend"):
 
@@ -58,5 +63,5 @@ if st.button("Recommend"):
 
     st.subheader("Recommended Movies:")
 
-    for movie in recommendations:
-        st.write(movie)
+    for i, movie in enumerate(recommendations, start=1):
+        st.write(f"{i}. {movie}")
