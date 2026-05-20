@@ -3,10 +3,12 @@ import streamlit as st
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
+from dotenv import load_dotenv
+import os
 
 #API DATA FETCHING
-
-API_KEY = ""
+load_dotenv()
+API_KEY = os.getenv("API_KEY")
 
 
 def fetch_poster(movie_title):
